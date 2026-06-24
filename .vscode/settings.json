@@ -1,0 +1,12 @@
+{
+  "typescript.preferences.excludeLibrarySymbolsInNavTo": true,
+  "javascript.validate.enable": false,
+  "typescript.validate.enable": false,
+  "search.exclude": {
+    "**/node_modules": true
+  },
+  "files.watcherExclude": {
+    "**/node_modules/**": true
+  },
+  "eslint.workingDirectories": ["backend", "frontend"]
+}

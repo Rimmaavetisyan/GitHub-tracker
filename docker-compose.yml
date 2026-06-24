@@ -1,0 +1,37 @@
+services:
+
+  poller:
+    build: ./backend
+    command: node src/index.js
+    env_file: ./backend/.env
+    environment:
+      DB_PATH: /data/tracker.db
+    volumes:
+      - db_data:/data
+    restart: unless-stopped
+
+  api:
+    build: ./backend
+    command: node src/server.js
+    env_file: ./backend/.env
+    environment:
+      DB_PATH: /data/tracker.db
+      PORT: 4000
+    volumes:
+      - db_data:/data
+    ports:
+      - "4000:4000"
+    depends_on:
+      - poller
+    restart: unless-stopped
+
+  frontend:
+    build: ./frontend
+    ports:
+      - "80:80"
+    depends_on:
+      - api
+    restart: unless-stopped
+
+volumes:
+  db_data:

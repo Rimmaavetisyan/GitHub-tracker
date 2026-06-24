@@ -1,0 +1,141 @@
+.header {
+  background: #161b22;
+  border-bottom: 1px solid #30363d;
+  padding: 16px 32px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.logo {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-size: 18px;
+  font-weight: 700;
+  color: #f0f6fc;
+}
+
+.headerRight { display: flex; align-items: center; gap: 16px; }
+
+.refreshNote { font-size: 12px; color: #8b949e; }
+
+.refreshBtn {
+  background: #21262d;
+  border: 1px solid #30363d;
+  color: #e6edf3;
+  padding: 6px 14px;
+  border-radius: 6px;
+  font-size: 12px;
+  cursor: pointer;
+  transition: background 0.15s;
+}
+.refreshBtn:hover { background: #30363d; }
+
+.main {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 32px;
+}
+
+.stats {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 16px;
+  margin-bottom: 28px;
+}
+
+.statCard {
+  background: #161b22;
+  border: 1px solid #30363d;
+  border-radius: 10px;
+  padding: 20px 24px;
+}
+
+.statNumber {
+  font-size: 32px;
+  font-weight: 700;
+  line-height: 1;
+  margin-bottom: 6px;
+}
+
+.statLabel { font-size: 13px; color: #8b949e; }
+
+.tableCard {
+  background: #161b22;
+  border: 1px solid #30363d;
+  border-radius: 10px;
+  overflow: hidden;
+}
+
+.tableHeader {
+  padding: 14px 20px;
+  border-bottom: 1px solid #30363d;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.tableHeader h2 { font-size: 15px; font-weight: 600; }
+
+.lastPoll { font-size: 12px; color: #8b949e; }
+
+.table { width: 100%; border-collapse: collapse; font-size: 13px; }
+
+.table thead tr {
+  border-bottom: 1px solid #30363d;
+  color: #8b949e;
+  font-size: 11px;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.table th,
+.table td { padding: 12px 16px; text-align: left; }
+
+.row {
+  border-bottom: 1px solid #21262d;
+  transition: background 0.15s;
+}
+.row:last-child { border-bottom: none; }
+.row:hover { background: #1c2128; }
+
+.badgeOpen,
+.badgeMerged {
+  display: inline-block;
+  padding: 3px 9px;
+  border-radius: 20px;
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  white-space: nowrap;
+}
+
+.badgeOpen   { background: #1a4429; color: #3fb950; border: 1px solid #238636; }
+.badgeMerged { background: #2d1d55; color: #a371f7; border: 1px solid #6e40c9; }
+
+.prLink {
+  color: #58a6ff;
+  text-decoration: none;
+  font-weight: 600;
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  white-space: nowrap;
+}
+.prLink:hover { text-decoration: underline; color: #79c0ff; }
+
+.extIcon { width: 11px; height: 11px; opacity: 0.6; flex-shrink: 0; }
+
+.prTitle {
+  color: #e6edf3;
+  max-width: 400px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.author { color: #8b949e; white-space: nowrap; }
+.date   { color: #6e7681; white-space: nowrap; font-size: 12px; }
+
+.empty { text-align: center; padding: 48px; color: #8b949e; font-size: 14px; }
