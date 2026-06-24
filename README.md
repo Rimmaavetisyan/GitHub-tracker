@@ -8,6 +8,9 @@ A service that monitors a GitHub repository and stores PR activity in a private 
 GitHub API → Poller (every 60s) → SQLite DB → Express API → React UI
 ```
 
+
+
+
 Three independent services:
 
 | Service | What it does |
