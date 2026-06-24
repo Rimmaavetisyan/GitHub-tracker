@@ -25,6 +25,8 @@ Three independent services:
 - Idempotent inserts (`INSERT OR IGNORE`) — safe to restart anytime
 - SQLite WAL mode — concurrent reads and writes without blocking
 
+
+
 ## Project structure
 
 ```
