@@ -1,7 +1,7 @@
 services:
 
   poller:
-    build: ./backend
+    image: ghcr.io/rimmaavetisyan/github-tracker-backend:${TRACKER_VERSION:-v1.0.0}
     command: node src/index.js
     env_file: ./backend/.env
     environment:
@@ -11,7 +11,7 @@ services:
     restart: unless-stopped
 
   api:
-    build: ./backend
+    image: ghcr.io/rimmaavetisyan/github-tracker-backend:${TRACKER_VERSION:-v1.0.0}
     command: node src/server.js
     env_file: ./backend/.env
     environment:
@@ -26,7 +26,7 @@ services:
     restart: unless-stopped
 
   frontend:
-    build: ./frontend
+    image: ghcr.io/rimmaavetisyan/github-tracker-frontend:${TRACKER_VERSION:-v1.0.0}
     ports:
       - "80:80"
     depends_on:

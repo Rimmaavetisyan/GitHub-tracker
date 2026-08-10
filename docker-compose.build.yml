@@ -1,0 +1,12 @@
+# Local development: build the images from source instead of pulling them from GHCR.
+#   docker compose -f docker-compose.yml -f docker-compose.build.yml up --build
+services:
+
+  poller:
+    build: ./backend
+
+  api:
+    build: ./backend
+
+  frontend:
+    build: ./frontend
