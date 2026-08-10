@@ -46,6 +46,7 @@ github-tracker/
 │   │   ├── poller.js     # Polling logic (createPoller)
 │   │   ├── notifier.js   # Console notifications
 │   │   └── server.js     # Express API server
+│   ├── test/             # node:test suites for each module
 │   ├── Dockerfile
 │   └── .env.example
 ├── frontend/
@@ -55,7 +56,11 @@ github-tracker/
 │   │   └── main.jsx
 │   ├── Dockerfile
 │   └── vite.config.js
-└── docker-compose.yml
+├── .github/workflows/
+│   ├── ci.yml            # Tests + build on every push/PR
+│   └── release.yml       # Publishes images to GHCR on a v* tag
+├── docker-compose.yml       # Runs the published GHCR images
+└── docker-compose.build.yml # Overlay to build from source instead
 ```
 
 ## Running locally
@@ -82,10 +87,27 @@ cd frontend && npm install && npm run dev
 
 Open **http://localhost:5173**
 
-## Running with Docker
+## Tests
+
+The backend is covered by the built-in Node test runner — no test framework dependency.
 
 ```bash
-docker compose up --build
+cd backend && npm test
+```
+
+## Running with Docker
+
+`docker-compose.yml` pulls the published images from GHCR, pinned to a version tag:
+
+```bash
+docker compose up                       # uses the pinned default (v1.0.0)
+TRACKER_VERSION=v1.1.0 docker compose up # or pick another published tag
+```
+
+To build from source instead of pulling (local development):
+
+```bash
+docker compose -f docker-compose.yml -f docker-compose.build.yml up --build
 ```
 
 Open **http://localhost:80**
@@ -100,6 +122,45 @@ Open **http://localhost:80**
 | `PORT` | `4000` | API server port |
 | `LOG_LEVEL` | `info` | Log level: `debug`, `info`, `warn`, `error` |
 | `DB_PATH` | `backend/tracker.db` | SQLite file path |
+
+## CI/CD
+
+**CI** (`.github/workflows/ci.yml`) runs on every push and pull request: backend tests, frontend build, and a
+no-push Docker build of both images. npm downloads are cached by `actions/setup-node`, Docker layers by the
+GitHub Actions cache backend.
+
+**Release** (`.github/workflows/release.yml`) runs only on a version tag — not on merges to master:
+
+```bash
+git tag v1.0.0
+git push origin v1.0.0
+```
+
+It builds both images and pushes them to GHCR, tagged to match the git tag:
+
+| Git tag | Image tags |
+|---------|-----------|
+| `v1.0.0` | `v1.0.0`, `1.0`, `1` |
+
+Images: `ghcr.io/rimmaavetisyan/github-tracker-backend` and `…-frontend`.
+
+### Package visibility and auth
+
+The workflow authenticates with the automatic `GITHUB_TOKEN` (`packages: write` permission) — no PAT needed
+for publishing. Packages are **private by default**; make them public under
+*Package settings → Change visibility* if you want `docker compose up` to work without a login. To pull a
+private package:
+
+```bash
+echo $CR_PAT | docker login ghcr.io -u rimmaavetisyan --password-stdin   # PAT needs read:packages
+```
+
+### Branch protection
+
+Set on GitHub under *Settings → Branches → Add branch ruleset* for `master`:
+require a pull request, and under *Require status checks to pass* select **Backend tests**, **Frontend build**
+and the **Docker build** checks. The checks only appear in that list after the workflow has run at least once,
+so push this branch first.
 
 ## Tech stack
 
