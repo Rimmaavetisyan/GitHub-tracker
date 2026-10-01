@@ -1,0 +1,42 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: tracker-api
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: tracker-api
+  template:
+    metadata:
+      labels:
+        app: tracker-api
+    spec:
+      containers:
+        - name: tracker-api
+          image: github-tracker-backend:v1.0.0
+          imagePullPolicy: IfNotPresent
+          command: ["node", "src/server.js"]
+          ports:
+            - containerPort: 3000
+          env:
+            - name: NODE_ENV
+              value: "production"
+            - name: PORT
+              value: "3000"
+            - name: REPOS
+              value: "microsoft/vscode,Rimmaavetisyan/GitHub-tracker"
+            - name: DB_PATH
+              value: "/data/tracker.db"
+            - name: GITHUB_TOKEN
+              valueFrom:
+                secretKeyRef:
+                  name: github-tracker-secret
+                  key: GITHUB_TOKEN
+          volumeMounts:
+            - name: db-data
+              mountPath: /data
+      volumes:
+        - name: db-data
+          persistentVolumeClaim:
+            claimName: tracker-db-pvc
